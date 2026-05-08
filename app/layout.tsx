@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'EduIQ Sovereign',
-  description: 'Student Mental Health Intelligence',
+  title: 'EduIQ Sovereign Edition',
+  description: 'EduIQ Sovereign Edition — Student Mental Health Intelligence',
 }
 
 export default function RootLayout({

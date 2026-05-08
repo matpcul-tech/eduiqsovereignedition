@@ -1,5 +1,5 @@
 import { Resend } from 'resend'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -8,14 +8,56 @@ export async function POST(req: NextRequest) {
   const { email } = await req.json()
   if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 })
 
-  const supabase = createClient()
-  const { error } = await supabase.auth.signInWithOtp({
+  const admin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+
+  const redirectTo = `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`
+
+  const { data, error } = await admin.auth.admin.generateLink({
+    type: 'magiclink',
     email,
-    options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
-    },
+    options: { redirectTo },
   })
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error || !data?.properties?.action_link) {
+    return NextResponse.json({ error: error?.message || 'Could not generate link' }, { status: 500 })
+  }
+
+  const actionLink = data.properties.action_link
+
+  const html = `<!DOCTYPE html>
+<html>
+  <body style="margin:0;padding:0;background:#0d1117;font-family:system-ui,-apple-system,sans-serif;color:#ffffff;">
+    <div style="max-width:480px;margin:0 auto;padding:48px 24px;">
+      <div style="background:#161b22;border:1px solid rgba(0,212,170,0.15);border-radius:12px;padding:40px;">
+        <div style="text-align:center;margin-bottom:24px;">
+          <div style="font-size:40px;line-height:1;margin-bottom:8px;">🎓</div>
+          <div style="color:#ffffff;font-size:28px;font-weight:700;letter-spacing:-0.5px;">EduIQ Sovereign Edition</div>
+          <div style="color:#00d4aa;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-top:6px;">Student Mental Health Intelligence</div>
+        </div>
+        <p style="color:rgba(255,255,255,0.85);font-size:15px;line-height:1.6;margin:0 0 24px;">Click the button below to securely sign in to EduIQ Sovereign Edition. This link expires in 1 hour.</p>
+        <div style="text-align:center;margin-bottom:24px;">
+          <a href="${actionLink}" style="display:inline-block;background:#00d4aa;color:#0d1117;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;text-decoration:none;padding:14px 28px;border-radius:8px;">Sign In to EduIQ</a>
+        </div>
+        <p style="color:rgba(255,255,255,0.5);font-size:12px;line-height:1.6;margin:0;">If the button doesn't work, copy and paste this URL into your browser:<br><a href="${actionLink}" style="color:#00d4aa;word-break:break-all;">${actionLink}</a></p>
+        <div style="margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;">
+          <span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">🛡 Sovereign Prompt Shield v2.0 · HIPAA compliant</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>`
+
+  const { error: sendError } = await resend.emails.send({
+    from: process.env.RESEND_FROM!,
+    to: email,
+    subject: 'Sign in to EduIQ Sovereign Edition',
+    html,
+  })
+
+  if (sendError) return NextResponse.json({ error: sendError.message }, { status: 500 })
   return NextResponse.json({ success: true })
 }
