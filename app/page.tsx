@@ -5,15 +5,26 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   async function handleLogin() {
     setLoading(true)
-    const res = await fetch('/api/auth/send-magic-link', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    })
-    if (res.ok) setSent(true)
+    setError('')
+    try {
+      const res = await fetch('/api/auth/send-magic-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      if (res.ok) {
+        setSent(true)
+      } else {
+        const data = await res.json().catch(() => ({}))
+        setError(data.error || 'Could not send sign-in link. Please try again.')
+      }
+    } catch {
+      setError('Network error. Please check your connection and try again.')
+    }
     setLoading(false)
   }
 
@@ -96,8 +107,13 @@ export default function LoginPage() {
             >
               {loading ? 'Sending...' : 'Send Secure Link'}
             </button>
+            {error && (
+              <p style={{ color: '#ff4757', fontSize: '12px', textAlign: 'center', margin: '12px 0 0', lineHeight: 1.5 }}>
+                {error}
+              </p>
+            )}
             <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', textAlign: 'center', margin: '20px 0 0' }}>
-              HIPAA compliant · No passwords stored · Magic link expires in 1 hour
+              HIPAA aligned · No passwords stored · Magic link expires in 1 hour
             </p>
           </>
         )}

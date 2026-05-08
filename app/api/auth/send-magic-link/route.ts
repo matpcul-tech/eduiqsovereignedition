@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
         </div>
         <p style="color:rgba(255,255,255,0.5);font-size:12px;line-height:1.6;margin:0;">If the button doesn't work, copy and paste this URL into your browser:<br><a href="${actionLink}" style="color:#00d4aa;word-break:break-all;">${actionLink}</a></p>
         <div style="margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;">
-          <span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">🛡 Sovereign Prompt Shield v2.0 · HIPAA compliant</span>
+          <span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">🛡 Sovereign Prompt Shield v2.0 · HIPAA aligned</span>
         </div>
       </div>
     </div>
