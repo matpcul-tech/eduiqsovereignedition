@@ -59,7 +59,10 @@ export default function EducatorDashboard({ user, students, alerts }: Props) {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <span style={{ fontSize: '28px', lineHeight: 1 }}>🎓</span>
           <div>
-            <div style={{ fontSize: '22px', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.5px' }}>EduIQ</div>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+              <span style={{ fontSize: '22px', fontWeight: 700, letterSpacing: '-0.5px', lineHeight: 1.1 }}>EduIQ</span>
+              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', fontWeight: 600 }}>Sovereign Edition</span>
+            </div>
             <div style={{ color: colors.teal, fontSize: '10px', letterSpacing: '2px', textTransform: 'uppercase', fontWeight: 600, marginTop: '2px' }}>Student Mental Health Intelligence</div>
           </div>
         </div>
