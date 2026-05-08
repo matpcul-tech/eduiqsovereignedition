@@ -36,10 +36,10 @@ export default function ObservationForm({ studentId, onSuccess }: Props) {
   }
 
   const colors = {
-    teal: '#00d4aa',
+    teal: '#1de9b6',
     text: '#ffffff',
     muted: 'rgba(255,255,255,0.6)',
-    border: 'rgba(0,212,170,0.15)',
+    border: 'rgba(29,233,182,0.15)',
     surface: '#0d1117',
   }
 

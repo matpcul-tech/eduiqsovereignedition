@@ -5,11 +5,11 @@ const C = {
   bg: '#0d1117',
   surface: '#161b22',
   surfaceAlt: '#1c2230',
-  border: 'rgba(0,212,170,0.15)',
-  borderStrong: 'rgba(0,212,170,0.3)',
+  border: 'rgba(29,233,182,0.15)',
+  borderStrong: 'rgba(29,233,182,0.3)',
   divider: 'rgba(255,255,255,0.06)',
-  teal: '#00d4aa',
-  tealDim: 'rgba(0,212,170,0.08)',
+  teal: '#1de9b6',
+  tealDim: 'rgba(29,233,182,0.08)',
   text: '#ffffff',
   muted: 'rgba(255,255,255,0.6)',
   mutedFaint: 'rgba(255,255,255,0.4)',
@@ -180,7 +180,10 @@ function AppHeader() {
           fontSize: '20px',
         }}>🎓</div>
         <div>
-          <div style={{ fontSize: '18px', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.3px' }}>EduIQ</div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+            <span style={{ fontSize: '18px', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.3px' }}>EduIQ</span>
+            <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '10px', fontWeight: 600 }}>Chikasha Sovereign Edition</span>
+          </div>
           <div style={{ color: C.teal, fontSize: '8px', letterSpacing: '1.5px', textTransform: 'uppercase', fontWeight: 600, marginTop: '2px' }}>
             Student Mental Health Intelligence
           </div>
