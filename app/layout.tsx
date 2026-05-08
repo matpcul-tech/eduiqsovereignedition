@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'EduIQ Sovereign',
-  description: 'Child Mental Health Early Warning System — Sovereign Shield Technologies',
+  description: 'Student Mental Health Intelligence',
 }
 
 export default function RootLayout({
@@ -15,8 +15,9 @@ export default function RootLayout({
       <body style={{
         margin: 0,
         padding: 0,
-        background: '#0f1f0f',
-        fontFamily: "'Cormorant Garamond', Georgia, serif",
+        background: '#0d1117',
+        color: '#ffffff',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
       }}>
         {children}
       </body>

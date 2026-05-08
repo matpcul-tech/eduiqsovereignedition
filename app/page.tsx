@@ -20,38 +20,36 @@ export default function LoginPage() {
   return (
     <main style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1a2e1a 0%, #0f1f0f 60%, #1c1200 100%)',
+      background: '#0d1117',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      fontFamily: "'Cormorant Garamond', Georgia, serif",
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      padding: '24px',
     }}>
       <div style={{
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(212,175,55,0.3)',
-        borderRadius: '2px',
-        padding: '56px 48px',
+        background: '#161b22',
+        border: '1px solid rgba(0,212,170,0.15)',
+        borderRadius: '12px',
+        padding: '48px 40px',
         maxWidth: '420px',
         width: '100%',
-        backdropFilter: 'blur(12px)',
       }}>
-        <div style={{ marginBottom: '40px', textAlign: 'center' }}>
-          <div style={{ color: '#d4af37', fontSize: '11px', letterSpacing: '4px', textTransform: 'uppercase', marginBottom: '16px' }}>
-            Sovereign Shield Technologies
-          </div>
-          <h1 style={{ color: '#f5f0e8', fontSize: '36px', fontWeight: '300', margin: '0 0 8px' }}>
-            EduIQ Sovereign
+        <div style={{ marginBottom: '32px', textAlign: 'center' }}>
+          <div style={{ fontSize: '48px', marginBottom: '8px', lineHeight: 1 }}>🎓</div>
+          <h1 style={{ color: '#ffffff', fontSize: '36px', fontWeight: 700, margin: '0 0 8px', letterSpacing: '-0.5px' }}>
+            EduIQ
           </h1>
-          <p style={{ color: 'rgba(245,240,232,0.5)', fontSize: '14px', margin: 0 }}>
-            Child Mental Health Early Warning System
+          <p style={{ color: '#00d4aa', fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', margin: 0, fontWeight: 600 }}>
+            Student Mental Health Intelligence
           </p>
         </div>
 
         {sent ? (
-          <div style={{ textAlign: 'center', color: '#d4af37' }}>
-            <div style={{ fontSize: '32px', marginBottom: '16px' }}>✦</div>
-            <p style={{ color: '#f5f0e8', fontSize: '16px', margin: '0 0 8px' }}>Check your email</p>
-            <p style={{ color: 'rgba(245,240,232,0.5)', fontSize: '13px' }}>A secure sign-in link has been sent to {email}</p>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '32px', marginBottom: '12px', color: '#00d4aa' }}>✓</div>
+            <p style={{ color: '#ffffff', fontSize: '16px', margin: '0 0 8px', fontWeight: 600 }}>Check your email</p>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', margin: 0 }}>A secure sign-in link has been sent to {email}</p>
           </div>
         ) : (
           <>
@@ -64,10 +62,10 @@ export default function LoginPage() {
               style={{
                 width: '100%',
                 padding: '14px 16px',
-                background: 'rgba(255,255,255,0.06)',
-                border: '1px solid rgba(212,175,55,0.2)',
-                borderRadius: '2px',
-                color: '#f5f0e8',
+                background: '#0d1117',
+                border: '1px solid rgba(0,212,170,0.15)',
+                borderRadius: '8px',
+                color: '#ffffff',
                 fontSize: '15px',
                 fontFamily: 'inherit',
                 outline: 'none',
@@ -81,25 +79,31 @@ export default function LoginPage() {
               style={{
                 width: '100%',
                 padding: '14px',
-                background: loading ? 'rgba(212,175,55,0.3)' : '#d4af37',
+                background: loading || !email ? 'rgba(0,212,170,0.4)' : '#00d4aa',
                 border: 'none',
-                borderRadius: '2px',
-                color: '#0f1f0f',
+                borderRadius: '8px',
+                color: '#0d1117',
                 fontSize: '13px',
-                letterSpacing: '2px',
+                letterSpacing: '1px',
                 textTransform: 'uppercase',
-                fontWeight: '600',
-                cursor: loading ? 'not-allowed' : 'pointer',
+                fontWeight: 700,
+                cursor: loading || !email ? 'not-allowed' : 'pointer',
                 fontFamily: 'inherit',
               }}
             >
               {loading ? 'Sending...' : 'Send Secure Link'}
             </button>
-            <p style={{ color: 'rgba(245,240,232,0.3)', fontSize: '11px', textAlign: 'center', marginTop: '20px' }}>
+            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', textAlign: 'center', margin: '20px 0 0' }}>
               HIPAA compliant · No passwords stored · Magic link expires in 1 hour
             </p>
           </>
         )}
+
+        <div style={{ marginTop: '32px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.08)', textAlign: 'center' }}>
+          <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', letterSpacing: '1px' }}>
+            🛡 Sovereign Prompt Shield v2.0
+          </span>
+        </div>
       </div>
     </main>
   )

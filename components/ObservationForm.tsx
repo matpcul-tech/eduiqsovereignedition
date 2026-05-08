@@ -35,38 +35,44 @@ export default function ObservationForm({ studentId, onSuccess }: Props) {
     setLoading(false)
   }
 
-  const colors = { gold: '#d4af37', text: '#f5f0e8', muted: 'rgba(245,240,232,0.5)', border: 'rgba(212,175,55,0.2)' }
+  const colors = {
+    teal: '#00d4aa',
+    text: '#ffffff',
+    muted: 'rgba(255,255,255,0.6)',
+    border: 'rgba(0,212,170,0.15)',
+    surface: '#0d1117',
+  }
 
   const ScoreSlider = ({ label, field, notesField }: { label: string, field: string, notesField: string }) => (
     <div style={{ marginBottom: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-        <label style={{ color: colors.muted, fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase' }}>{label}</label>
-        <span style={{ color: colors.gold, fontSize: '18px' }}>{(form as any)[field]}</span>
+        <label style={{ color: colors.muted, fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', fontWeight: 600 }}>{label}</label>
+        <span style={{ color: colors.teal, fontSize: '18px', fontWeight: 700 }}>{(form as any)[field]}</span>
       </div>
       <input
         type="range" min={0} max={10} value={(form as any)[field]}
         onChange={e => setForm(prev => ({ ...prev, [field]: parseInt(e.target.value) }))}
-        style={{ width: '100%', accentColor: colors.gold, marginBottom: '8px' }}
+        style={{ width: '100%', accentColor: colors.teal, marginBottom: '8px' }}
       />
       <input
         type="text"
         placeholder={`${label} notes (no student names or identifiers)`}
         value={(form as any)[notesField]}
         onChange={e => setForm(prev => ({ ...prev, [notesField]: e.target.value }))}
-        style={{ width: '100%', padding: '10px 12px', background: 'rgba(255,255,255,0.04)', border: `1px solid ${colors.border}`, borderRadius: '2px', color: colors.text, fontSize: '13px', fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }}
+        style={{ width: '100%', padding: '10px 12px', background: colors.surface, border: `1px solid ${colors.border}`, borderRadius: '6px', color: colors.text, fontSize: '13px', fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }}
       />
     </div>
   )
 
   return (
-    <div style={{ marginTop: '20px', padding: '20px', background: 'rgba(255,255,255,0.03)', border: `1px solid ${colors.border}`, borderRadius: '2px' }}>
+    <div style={{ marginTop: '20px', padding: '20px', background: '#0d1117', border: `1px solid ${colors.border}`, borderRadius: '8px' }}>
       <ScoreSlider label="Behavioral" field="behavioral_score" notesField="behavioral_notes" />
       <ScoreSlider label="Academic" field="academic_score" notesField="academic_notes" />
       <ScoreSlider label="Attendance" field="attendance_score" notesField="attendance_notes" />
-      {error && <p style={{ color: '#e05252', fontSize: '13px', marginBottom: '12px' }}>{error}</p>}
+      {error && <p style={{ color: '#ff4757', fontSize: '13px', marginBottom: '12px' }}>{error}</p>}
       <button
         onClick={submit} disabled={loading}
-        style={{ padding: '12px 24px', background: colors.gold, border: 'none', borderRadius: '2px', color: '#0f1f0f', fontSize: '12px', letterSpacing: '2px', textTransform: 'uppercase', cursor: 'pointer', fontFamily: 'inherit' }}
+        style={{ padding: '12px 24px', background: colors.teal, border: 'none', borderRadius: '6px', color: '#0d1117', fontSize: '12px', letterSpacing: '1px', textTransform: 'uppercase', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}
       >
         {loading ? 'Saving...' : 'Save Observation'}
       </button>
