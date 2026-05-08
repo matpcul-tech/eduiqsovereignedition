@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
   })
 
   if (error || !data?.properties?.action_link) {
+    console.error('[send-magic-link] generateLink failed:', error)
     return NextResponse.json({ error: error?.message || 'Could not generate link' }, { status: 500 })
   }
 
@@ -64,6 +65,9 @@ export async function POST(req: NextRequest) {
     html,
   })
 
-  if (sendError) return NextResponse.json({ error: sendError.message }, { status: 500 })
+  if (sendError) {
+    console.error('[send-magic-link] Resend rejected the send:', sendError, '(from:', resendFrom, ')')
+    return NextResponse.json({ error: sendError.message }, { status: 500 })
+  }
   return NextResponse.json({ success: true })
 }

@@ -1,19 +1,38 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+import { createClient } from '@supabase/supabase-js'
 import EducatorDashboard from '@/components/dashboards/EducatorDashboard'
 
 export default async function EducatorPage() {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/')
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
+  const fallbackUser = {
+    id: 'demo',
+    full_name: 'Demo Educator',
+    school_name: 'Demo School',
+    tribal_affiliation: '',
+    role: 'educator',
+  }
+
+  if (!supabaseUrl || !serviceKey) {
+    return <EducatorDashboard user={fallbackUser} students={[]} alerts={[]} />
+  }
+
+  const supabase = createClient(supabaseUrl, serviceKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  })
+
+  // Open-access demo mode: pick the first educator in the DB.
   const { data: eduUser } = await supabase
     .from('eduiq_users')
     .select('*')
-    .eq('auth_id', user.id)
-    .single()
+    .eq('role', 'educator')
+    .order('created_at', { ascending: true })
+    .limit(1)
+    .maybeSingle()
 
-  if (!eduUser || eduUser.role !== 'educator') redirect('/dashboard')
+  if (!eduUser) {
+    return <EducatorDashboard user={fallbackUser} students={[]} alerts={[]} />
+  }
 
   const { data: students } = await supabase
     .from('eduiq_students')
