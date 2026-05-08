@@ -2,11 +2,6 @@ import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import twilio from 'twilio'
 
-const twilioClient = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-)
-
 export async function POST(req: NextRequest) {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -37,14 +32,19 @@ export async function POST(req: NextRequest) {
     .eq('id', student_id)
     .single()
 
+  const twilioSid = process.env.TWILIO_ACCOUNT_SID
+  const twilioToken = process.env.TWILIO_AUTH_TOKEN
+  const twilioPhone = process.env.TWILIO_PHONE_NUMBER
+
   let smsSent = false
-  if (guardians && guardians.length > 0) {
+  if (guardians && guardians.length > 0 && twilioSid && twilioToken && twilioPhone) {
+    const twilioClient = twilio(twilioSid, twilioToken)
     for (const guardian of guardians) {
       if (guardian.phone_number) {
         try {
           await twilioClient.messages.create({
             body: `EduIQ Sovereign Alert [${alert_level.toUpperCase()}]: ${student?.full_name || 'Your student'} — ${message} Log in at ${process.env.NEXT_PUBLIC_APP_URL} for details.`,
-            from: process.env.TWILIO_PHONE_NUMBER,
+            from: twilioPhone,
             to: guardian.phone_number,
           })
           smsSent = true
