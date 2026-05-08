@@ -2,19 +2,25 @@ import { Resend } from 'resend'
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(req: NextRequest) {
   const { email } = await req.json()
   if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 })
 
-  const admin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  )
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  const resendKey = process.env.RESEND_API_KEY
+  const resendFrom = process.env.RESEND_FROM
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL
+  if (!supabaseUrl || !serviceKey || !resendKey || !resendFrom || !appUrl) {
+    return NextResponse.json({ error: 'Email auth is not configured on this server' }, { status: 500 })
+  }
 
-  const redirectTo = `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`
+  const resend = new Resend(resendKey)
+  const admin = createClient(supabaseUrl, serviceKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  })
+
+  const redirectTo = `${appUrl}/auth/callback`
 
   const { data, error } = await admin.auth.admin.generateLink({
     type: 'magiclink',
@@ -52,7 +58,7 @@ export async function POST(req: NextRequest) {
 </html>`
 
   const { error: sendError } = await resend.emails.send({
-    from: process.env.RESEND_FROM!,
+    from: resendFrom,
     to: email,
     subject: 'Sign in to EduIQ Sovereign Edition',
     html,
